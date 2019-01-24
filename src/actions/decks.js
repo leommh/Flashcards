@@ -16,7 +16,7 @@ export function addDeck(data) {
 
 /**
 * @description Add question
-* @param {object} data ( question, response )
+* @param {object} data ( parentID, question, response )
 * @returns {boolean} true or false
 */
 export function addQuestion(data) {
