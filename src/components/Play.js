@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import { connect } from 'react-redux'
-import { FormLabel, FormInput, FormValidationMessage, Button } from 'react-native-elements'
-import { addDeck } from '../actions/decks'
+import { Button, Text } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
+import { randomColor } from '../utils/colors'
+import styles from '../styles'
 
 class Play extends Component {
 
@@ -12,7 +13,8 @@ class Play extends Component {
         cards: 0,
         points: 0,
         cardActive: 0,
-        showResolution: false
+        showResolution: false,
+        color: randomColor()
     }
 
     componentDidMount() {
@@ -29,7 +31,7 @@ class Play extends Component {
         let tempPoints = itens[cardActive].resolution === response ? points + 1 : points  
         let tempCards = cards - 1
         let tempCardActive = cardActive < itens.length ? cardActive + 1 : itens.length
-        return this.setState({cards: tempCards, points: tempPoints, cardActive: tempCardActive, showResolution: false})
+        return this.setState({cards: tempCards, points: tempPoints, cardActive: tempCardActive, showResolution: false, color: randomColor()})
     }
 
     reset = () => {
@@ -41,39 +43,39 @@ class Play extends Component {
         const { keyPlay, cards, points, cardActive, showResolution } = this.state
         const { itens } = this.props
         return (
-            <View key={keyPlay} style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <View key={keyPlay} style={[styles.page, { backgroundColor: this.state.color }]}>
                 {
                     cards !== 0 && cardActive < itens.length && (
-                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Text>Points: {points}</Text>
-                                <Text>Cards Rest: {cards}</Text>
+                        <View style={styles.pagePanel}>
+                            <View style={[styles.pageHeader, { flex: 0 }]}>
+                                <Text h2 style={styles.pageText}>Points: {points}</Text>
+                                <Text h4 style={styles.pageText}>Cards Rest: {cards}</Text>
                             </View>
-                            <View>
-                                <Text>{itens[cardActive].question}</Text>
+                            <View style={[styles.pageBody, { flex: 1 }]}>
+                                <Text style={[styles.pageText, { fontSize: 16, textAlign: 'center' }]}>{itens[cardActive].question}</Text>
                                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                                     {
                                         showResolution && (
-                                            <Text>Resolution: {itens[cardActive].resolution === true ? `Correct` : `Incorrect`}</Text>
+                                            <Text style={[styles.pageText, { fontSize: 16, color: this.state.color }]}>Resolution: {itens[cardActive].resolution === true ? `Correct` : `Incorrect`}</Text>
                                         )
                                     }
                                     <Button
-                                        backgroundColor="yellow"
-                                        small
+                                        buttonStyle={[styles.button, { backgroundColor: this.state.color, padding: 16 }]}
+                                        fontSize={12}
                                         title='SHOW RESOLUTION' 
                                         onPress={() => this.setState({showResolution: true})}
                                     />
                                 </View>
                                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                                     <Button
-                                        backgroundColor="red"
-                                        small
+                                        buttonStyle={[styles.button, { backgroundColor: '#FF6660', padding: 16 }]}
+                                        fontSize={14}
                                         title='INCORRECT' 
                                         onPress={() => this.setResponse(false)}
                                     />
                                     <Button
-                                        backgroundColor="blue"
-                                        small
+                                        buttonStyle={[styles.button, { backgroundColor: '#26E8BA', padding: 16 }]}
+                                        fontSize={14}
                                         title='CORRECT' 
                                         onPress={() => this.setResponse(true)}
                                     />                         
@@ -86,21 +88,25 @@ class Play extends Component {
 
                 {
                     cards === 0 && cardActive === itens.length && (
-                        <View>
-                            <Text>Final Points: {points}</Text>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                                <Button
-                                    backgroundColor="red"
-                                    small
-                                    title='RE-PLAY GAME' 
-                                    onPress={() => this.reset()}
-                                />
-                                <Button
-                                    backgroundColor="blue"
-                                    small
-                                    title='BACK TO DECK' 
-                                    onPress={() => Actions.pop()}
-                                />                         
+                        <View style={styles.pagePanel}>
+                            <View style={[styles.pageHeader, { flex: 1, justifyContent: 'center' }]}>
+                                <Text h2 style={styles.pageText}>Final Points: {points}</Text>
+                            </View>
+                            <View style={[styles.pageBody, { flex: 1 }]}>
+                                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <Button
+                                        buttonStyle={[styles.button, { backgroundColor: this.state.color, padding: 16 }]}
+                                        fontSize={14}
+                                        title='RE-PLAY GAME' 
+                                        onPress={() => this.reset()}
+                                    />
+                                    <Button
+                                        buttonStyle={[styles.button, { backgroundColor: this.state.color, padding: 16 }]}
+                                        fontSize={14}
+                                        title='BACK TO DECK' 
+                                        onPress={() => Actions.pop()}
+                                    />                         
+                                </View>
                             </View>
                         </View>
                     )

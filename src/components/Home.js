@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Button } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
 import Deck from './Deck'
+import styles from '../styles'
 
 class Home extends Component {
 
@@ -25,7 +26,7 @@ class Home extends Component {
                 </ScrollView>
 
                 <Button
-                    buttonStyle={{marginBottom: 10, marginTop: 10,}}
+                    buttonStyle={[styles.button]}
                     backgroundColor="#333"
                     large
                     icon={{name: 'plus-circle', type: 'font-awesome'}}

@@ -1,4 +1,6 @@
-export const randomColor = () => 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + '1 )';
+// export const randomColor = () => '#'+Math.floor(Math.random()*16777215).toString(16);
+
+export const randomColor = () => 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 150)) + ',' + (Math.floor(Math.random() * 150)) + '1 )';
 
 export const randomLogo = () => ('../img/coverDeck' + Math.floor(Math.random() * 6) + '.png');
 

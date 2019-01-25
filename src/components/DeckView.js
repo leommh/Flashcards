@@ -1,17 +1,22 @@
-import React, { Component } from 'react'
-import { View, ScrollView, Text } from 'react-native'
+import React, { PureComponent } from 'react'
+import { View, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import { Button } from 'react-native-elements'
+import { Button, Text } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
+import { randomColor } from '../utils/colors'
+import styles from '../styles'
 
-class DeckView extends Component {
+class DeckView extends PureComponent {
 
     state = {
         deck: {}
     }
 
+    componentDidMount() {
+        Object.keys(this.state.deck).length <= 0 && this.catchDeck(this.props.decks, this.props.id)
+    }
+
     componentDidUpdate(oldProps) {
-        console.log(this.state)
         this.props.decks !== oldProps.decks && this.catchDeck(this.props.decks, this.props.id)
     }
 
@@ -21,36 +26,41 @@ class DeckView extends Component {
     }
 
     render() {
-        Object.keys(this.state.deck).length <= 0 && this.catchDeck(this.props.decks, this.props.id)
         
+        const color = this.props.color || randomColor(); 
         return (
-            <View style={{flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
+            <View style={[styles.page, { backgroundColor: color}]}>
                 { 
                     Object.keys(this.state.deck).length > 0 && (
-                        <ScrollView style={{flex: 1}}>
-                            <Text>TITLE: {this.state.deck.title}</Text>
-                            <Text>CARDS: { this.state.deck.itens.length }</Text>
-                            <Button
-                                buttonStyle={{marginBottom: 10}}
-                                backgroundColor="#333"
-                                large
-                                icon={{name: 'plus-circle', type: 'font-awesome'}}
-                                title='ADD QUESTION' 
-                                onPress={() => Actions.cardForm({mode: 'new', parentID: this.props.id})}
-                            />
-                            {
-                                this.state.deck.itens.length > 0 && (
-                                    <Button
-                                        buttonStyle={{marginBottom: 10}}
-                                        backgroundColor="#333"
-                                        large
-                                        icon={{name: 'plus-circle', type: 'font-awesome'}}
-                                        title='PLAY' 
-                                        onPress={() => Actions.play({itens: this.state.deck.itens})}
-                                    />
-                                )
-                            }
-                        </ScrollView>
+                        <View style={styles.pagePanel}>
+                            <View style={styles.pageHeader}>
+                                <Text h2 style={styles.pageText}>{this.state.deck.title}</Text>
+                                <Text h4 style={styles.pageText}>CARDS: { this.state.deck.itens.length }</Text>
+                            </View>
+                            <View style={styles.pageBody}>
+                                {
+                                    this.state.deck.itens.length > 0 && (
+                                        <Button
+                                            buttonStyle={[styles.button, { padding: 20, borderRadius: 10, backgroundColor: color }]}
+                                            backgroundColor="#333"
+                                            fontSize={20}
+                                            icon={{name: 'games'}}
+                                            title='PLAY' 
+                                            onPress={() => Actions.play({itens: this.state.deck.itens})}
+                                        />
+                                    )
+                                }
+                                <Button
+                                    buttonStyle={[styles.button, { padding: 15, backgroundColor: color }]}
+                                    backgroundColor="#333"
+                                    fontSize={20}
+                                    icon={{name: 'plus-circle', type: 'font-awesome'}}
+                                    title='QUESTION' 
+                                    onPress={() => Actions.cardForm({mode: 'new', parentID: this.props.id, color: color})}
+                                />
+
+                            </View>
+                        </View>
                     )
                 }
 
