@@ -88,7 +88,7 @@ class QuestionForm extends Component {
                         <Button
                             buttonStyle={[styles.button, { backgroundColor: color, padding: 16 }]}
                             icon={{name: 'plus-circle', type: 'font-awesome'}}
-                            title='QUESTION' 
+                            title='Create Card' 
                             onPress={() => this.confirm()}
                         />
                     </View>

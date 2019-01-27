@@ -5,6 +5,10 @@ import { Button, Text } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux'
 import { randomColor } from '../utils/colors'
 import styles from '../styles'
+import {
+    clearLocalNotification,
+    setLocalNotification
+} from '../utils/helpers'
 
 class Play extends Component {
 
@@ -20,10 +24,9 @@ class Play extends Component {
     componentDidMount() {
         const { itens } = this.props
         itens !== undefined && this.setState({cards: itens.length})
-    }
 
-    componentDidUpdate(oldProps) {
-        console.log(this.props)
+        clearLocalNotification()
+        .then(setLocalNotification)
     }
 
     setResponse = (response) => {
@@ -97,13 +100,13 @@ class Play extends Component {
                                     <Button
                                         buttonStyle={[styles.button, { backgroundColor: this.state.color, padding: 16 }]}
                                         fontSize={14}
-                                        title='RE-PLAY GAME' 
+                                        title='Restart Quiz' 
                                         onPress={() => this.reset()}
                                     />
                                     <Button
                                         buttonStyle={[styles.button, { backgroundColor: this.state.color, padding: 16 }]}
                                         fontSize={14}
-                                        title='BACK TO DECK' 
+                                        title='Back to Deck' 
                                         onPress={() => Actions.pop()}
                                     />                         
                                 </View>

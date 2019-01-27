@@ -1,4 +1,4 @@
-import { ADD_DECK, ADD_QUESTION } from '../actions/decks'
+import { ADD_DECK, ADD_QUESTION, SET_VOTE } from '../actions/decks'
 
 let STATE_INITIAL = {
     decks: [{
@@ -24,18 +24,31 @@ let STATE_INITIAL = {
     }]
 }
 
-const initialDeck = (stateDecks, newDeck) => {
+const initialDeck = ({ decks }, newDeck) => {
     newDeck.id = Math.random() * 10 + Math.random() * 10;
     newDeck.itens = [];
     newDeck.likes = 0;
     newDeck.dislikes = 0;
-    return [...stateDecks, newDeck]
+    return [...decks, newDeck]
 }
 
-const questDeck = (stateDecks, newQuestion) => {
-    let newDecks = stateDecks.map( deck => 
+const questDeck = ({ decks }, newQuestion) => {
+    let newDecks = decks.map( deck => 
         deck.id === newQuestion.parentID 
         ? {...deck, itens: [...deck.itens, newQuestion]}
+        : deck
+    )
+    return [...newDecks]
+}
+
+const setVote = ({ decks, likes, dislikes }, vote) => {
+    let newDecks = decks.map(deck => 
+        deck.id === vote.parentID
+        ? { 
+            ...deck, 
+            likes: vote.option === true ? deck.likes + 1 : deck.likes, 
+            dislikes: vote.option === false ? deck.dislikes + 1 : deck.dislikes 
+        }
         : deck
     )
     return [...newDecks]
@@ -46,12 +59,17 @@ export default decks = (state = STATE_INITIAL, action) => {
         case ADD_DECK:
             return {
                 ...state,
-                decks: initialDeck(state.decks, action.payload),
+                decks: initialDeck(state, action.payload),
             }
         case ADD_QUESTION: 
             return {
                 ...state,
-                decks: questDeck(state.decks, action.payload)
+                decks: questDeck(state, action.payload)
+            }
+        case SET_VOTE:
+            return {
+                ...state,
+                decks: setVote(state, action.payload)
             }
         default:
             return state

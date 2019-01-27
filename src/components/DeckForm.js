@@ -30,7 +30,7 @@ class DeckForm extends Component {
     componentDidUpdate(oldProps) {
         if (this.props.decks !== oldProps.decks) {
             const newDeck = this.props.decks[this.props.decks.length - 1];
-            return Actions.deckView({ id: newDeck.id, color: color })
+            return Actions.deckView({ ...newDeck, color: color })
         }
     }
 
@@ -61,7 +61,7 @@ class DeckForm extends Component {
                         <Button
                             buttonStyle={[styles.button, { backgroundColor: color, padding: 16 }]}
                             icon={{name: 'plus-circle', type: 'font-awesome'}}
-                            title='DECK' 
+                            title='Create Deck' 
                             onPress={() => this.confirm()}
                         />
                     </View>

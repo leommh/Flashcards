@@ -22,8 +22,8 @@ class Deck extends Component {
                 <View key={key} style={{justifyContent: 'center', alignItems: 'center'}}>
                     <Text h4 style={{color: '#333', margin: 5}}>{ title }</Text>
                     <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', margin: 5}}>
-                        <Text>LIKES: { likes }</Text>
-                        <Text>DISLIKES: { dislikes }</Text>
+                        <Text style={styles.pageText}>DISLIKES: { dislikes }</Text>
+                        <Text style={styles.pageText}>LIKES: { likes }</Text>
                     </View>
                 </View>
                 <Button
@@ -32,7 +32,7 @@ class Deck extends Component {
                     fontSize={16}
                     icon={{name: 'crosshairs',  type: 'font-awesome'}}
                     title='ENTER' 
-                    onPress={() => Actions.deckView({ id: id, color: color })}
+                    onPress={() => Actions.deckView({ ...this.props.deck, color })}
                 />
             </Card>
         )
