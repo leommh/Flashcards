@@ -31,7 +31,6 @@ class DeckView extends PureComponent {
         this.setState({pose: 'open'});
     }
 
-
     componentDidUpdate(oldProps) {
         this.props.decks !== oldProps.decks && this.catchDeck(this.props.decks, this.props.id)
     }
@@ -48,7 +47,7 @@ class DeckView extends PureComponent {
             <Box style={[{ flex: 1, backgroundColor: color }]} pose={this.state.pose}>
                 { 
                     Object.keys(deck).length > 0 && (
-                        this.setState({poseChild: 'open'}),
+                        this.state.poseChild === 'closed' && this.setState({ poseChild: 'open' }),
                         <Card style={styles.pagePanel} pose={this.state.poseChild}>
                             <View style={styles.pageHeader}>
                                 <Text h2 style={styles.pageText}>{deck.title}</Text>
