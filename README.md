@@ -15,3 +15,9 @@ To start and test this project you just need:
 * After executing an "expo start" to start compiling the code in react and after compiling, just choose the platform that you prefer to run the project (Android or iOS).
 
 ##### Link of project expo.io: https://expo.io/@leommh/flashcards
+
+How to use:
+
+1 - git clone
+2 - yarn install
+3 - expo start
